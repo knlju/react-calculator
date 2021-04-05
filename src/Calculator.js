@@ -6,13 +6,13 @@ function Calculator(props) {
   const [firstNumber, setFirstNumber] = useState(undefined)
   const [action, setAction] = useState(undefined)
   // multiply last input by 0 if new input is needed
-  const [inputChangable, setInputChangeable] = useState(0)
+  const [inputChangeMultiplier, setInputChangeMultiplier] = useState(0)
 
-  const setActionAndFisrtNumber = (action) => {
+  const actionSetter = (action) => {
     setAction(action)
     setFirstNumber(inputText)
     setMultiplier(10)
-    setInputChangeable(0)
+    setInputChangeMultiplier(0)
   }
 
   const reset = () => {
@@ -61,22 +61,25 @@ function Calculator(props) {
         break
       }
     }
+
+    setMultiplier(10)
+    setInputChangeMultiplier(0)
   }
 
   const appendInput = input => {
     // positive if 0 because it will be used for multiplication
     let sign = (Math.sign(inputText) || 1)
-    if (inputChangable === 0) {
-      setInputChangeable(1)
+    if (inputChangeMultiplier === 0) {
+      setInputChangeMultiplier(1)
       // set sign to positive for new inputs
       sign = 1
     }
     if (multiplier === 10) {
-      setInputText(inputChangable * inputText * multiplier + input * sign)
+      setInputText(inputChangeMultiplier * inputText * multiplier + input * sign)
       return
     }
     setMultiplier(multiplier / 10)
-    setInputText(inputChangable * inputText + input * multiplier * sign)
+    setInputText(inputChangeMultiplier * inputText + input * multiplier * sign)
   }
 
   // limit number to 10 digits and filter trailing zeros
@@ -92,26 +95,26 @@ function Calculator(props) {
           {inputText === 0 ? 'AC' : 'C'}
         </button>
         <button className='button-controls' onClick={() => setInputText(-inputText)}>±</button>
-        <button className='button-controls' onClick={() => setActionAndFisrtNumber('mod')}>%</button>
-        <button className='button-actions' onClick={() => setActionAndFisrtNumber('divide')}>÷</button>
+        <button className='button-controls' onClick={() => actionSetter('mod')}>%</button>
+        <button className='button-actions' onClick={() => actionSetter('divide')}>÷</button>
       </div>
       <div className='row'>
         <button onClick={() => appendInput(1)}>1</button>
         <button onClick={() => appendInput(2)}>2</button>
         <button onClick={() => appendInput(3)}>3</button>
-        <button className='button-actions' onClick={() => setActionAndFisrtNumber('multiply')}>x</button>
+        <button className='button-actions' onClick={() => actionSetter('multiply')}>x</button>
       </div>
       <div className='row'>
         <button onClick={() => appendInput(4)}>4</button>
         <button onClick={() => appendInput(5)}>5</button>
         <button onClick={() => appendInput(6)}>6</button>
-        <button className='button-actions' onClick={() => setActionAndFisrtNumber('minus')}>-</button>
+        <button className='button-actions' onClick={() => actionSetter('minus')}>-</button>
       </div>
       <div className='row'>
         <button onClick={() => appendInput(7)}>7</button>
         <button onClick={() => appendInput(8)}>8</button>
         <button onClick={() => appendInput(9)}>9</button>
-        <button className='button-actions' onClick={() => setActionAndFisrtNumber('plus')}>+</button>
+        <button className='button-actions' onClick={() => actionSetter('plus')}>+</button>
       </div>
       <div className='row'>
         <button className='button-zero' onClick={() => appendInput(0)}>0</button>
